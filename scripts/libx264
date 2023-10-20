@@ -12,6 +12,11 @@ do_download()
 {
   info "Download $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -e $SNAPSHOT_FILE ]]
+  then
+    info 'Already downloaded'
+    return
+  fi
   if ! wget https://code.videolan.org/videolan/x264/-/archive/stable/$SNAPSHOT_FILE -O $SNAPSHOT_FILE; then
     error "Failed to download $NAME"
   fi
@@ -22,6 +27,11 @@ do_unpack()
 {
   info "Unpack $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -d ${SNAPSHOT_FILE%.tar.bz2} ]]
+  then
+    info 'Already unpacked'
+    return
+  fi
   if ! tar xjvf $SNAPSHOT_FILE; then
     error "Failed to unpack $NAME"
   fi
@@ -41,11 +51,9 @@ do_configure()
 do_compile()
 {
   info "Compile $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
-  if [ -f "/proc/cpuinfo" ]; then
-    COMPILE_ARGS="-j$(grep -c ^processor /proc/cpuinfo)"
-  fi
   cd_src x264-stable
-  if ! make $COMPILE_ARGS; then
+  if ! make -j$(nproc)
+  then
     error "Failed to compile $NAME"
   fi
   info "Compilation complete"

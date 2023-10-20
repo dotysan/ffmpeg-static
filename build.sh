@@ -1,4 +1,6 @@
-#!/bin/bash
+#! /usr/bin/env bash
+#
+set -ex
 
 __FILE__=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)/`basename "${BASH_SOURCE[0]}"`
 __DIR__=$(dirname "${__FILE__}")

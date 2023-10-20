@@ -5,12 +5,17 @@ __DIR__=$(dirname "${__FILE__}")
 . $__DIR__/common.inc
 
 NAME=libsrt
-VERSION=1.5.1
+VERSION=1.5.3
 
 do_download()
 {
   info "Download $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -e libsrt-${VERSION}.tar.gz ]]
+  then
+    info 'Already downloaded'
+    return
+  fi
   if ! wget https://github.com/Haivision/srt/archive/v${VERSION}.tar.gz -O libsrt-${VERSION}.tar.gz; then
     error "Failed to download $NAME"
   fi
@@ -21,6 +26,11 @@ do_unpack()
 {
   info "Unpack $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -d srt-${VERSION} ]]
+  then
+    info 'Already unpacked'
+    return
+  fi
   if ! tar xzvf libsrt-${VERSION}.tar.gz; then
     error "Failed to unpack $NAME"
   fi
@@ -41,7 +51,8 @@ do_compile()
 {
   info "Compile $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src srt-${VERSION}
-  if ! make; then
+  if ! make -j$(nproc)
+  then
     error "Failed to compile $NAME"
   fi
   info "Compilation complete"

@@ -11,6 +11,11 @@ do_download()
 {
   info "Download $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -e ffmpeg-${VERSION}.tar.bz2 ]]
+  then
+    info 'Already downloaded'
+    return
+  fi
   if ! wget http://ffmpeg.org/releases/ffmpeg-${VERSION}.tar.bz2 -O ffmpeg-${VERSION}.tar.bz2; then
     error "Failed to download $NAME"
   fi
@@ -21,6 +26,11 @@ do_unpack()
 {
   info "Unpack $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
+  if [[ -d ffmpeg-${VERSION} ]]
+  then
+    info 'Already unpacked'
+    return
+  fi
   if ! tar xjvf ffmpeg-${VERSION}.tar.bz2; then
     error "Failed to unpack $NAME"
   fi
@@ -41,22 +51,8 @@ do_configure()
     --bindir="$BIN_DIR" \
     --enable-gpl \
     --enable-openssl \
-    --enable-libass \
-    --enable-libfdk-aac \
-    --enable-libfreetype \
-    --enable-libmp3lame \
-    --enable-libopus \
-    --enable-libtheora \
-    --enable-libvorbis \
-    --enable-libvpx \
     --enable-libx264 \
-    --enable-libx265 \
     --enable-libsrt \
-    --enable-librist \
-    --enable-libvmaf \
-    --enable-libaom \
-    --enable-libdav1d \
-    --enable-libzvbi \
     --enable-nonfree
   then
     error "Failed to configure $NAME"
@@ -67,11 +63,9 @@ do_configure()
 do_compile()
 {
   info "Compile $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
-  if [ -f "/proc/cpuinfo" ]; then
-    COMPILE_ARGS="-j$(grep -c ^processor /proc/cpuinfo)"
-  fi
   cd_src ffmpeg-${VERSION}
-  if ! make $COMPILE_ARGS; then
+  if ! make -j$(nproc)
+  then
     error "Failed to compile $NAME"
   fi
   info "Compilation complete"
