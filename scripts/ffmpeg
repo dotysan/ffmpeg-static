@@ -31,7 +31,7 @@ do_unpack()
     info 'Already unpacked'
     return
   fi
-  if ! tar xjvf ffmpeg-${VERSION}.tar.bz2; then
+  if ! tar xjf ffmpeg-${VERSION}.tar.bz2; then
     error "Failed to unpack $NAME"
   fi
   info "Unpack complete"
@@ -52,7 +52,6 @@ do_configure()
     --enable-gpl \
     --enable-openssl \
     --enable-libx264 \
-    --enable-libsrt \
     --enable-nonfree
   then
     error "Failed to configure $NAME"
