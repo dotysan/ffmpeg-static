@@ -51,7 +51,7 @@ do_compile()
 {
   info "Compile $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src srt-${VERSION}
-  if ! make -j$(nproc)
+  if ! make -j
   then
     error "Failed to compile $NAME"
   fi

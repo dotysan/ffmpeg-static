@@ -50,11 +50,9 @@ do_configure()
 do_compile()
 {
   info "Compile $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
-  if [ -f "/proc/cpuinfo" ]; then
-    COMPILE_ARGS="-j$(grep -c ^processor /proc/cpuinfo)"
-  fi
   cd_src libaom-${VERSION}/aom_build
-  if ! make $COMPILE_ARGS; then
+  if ! make -j
+  then
     error "Failed to compile $NAME"
   fi
   info "Compilation complete"
