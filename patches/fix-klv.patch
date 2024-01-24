@@ -1,0 +1,21 @@
+commit 17a1e00c2f92829720f7d5c53a0aaafe36b7d249
+Author: Curtis Doty <Curtis@GreenKey.net>
+Date:   Wed Jan 24 01:59:37 2024 +0000
+
+    Revert 468615f204 until we find a better solution
+
+diff --git a/libavformat/mpegts.c b/libavformat/mpegts.c
+index c7fd1f5d1f..61a0b4062c 100644
+--- a/libavformat/mpegts.c
++++ b/libavformat/mpegts.c
+@@ -1306,7 +1306,8 @@ skip:
+                     p += sl_header_bytes;
+                     buf_size -= sl_header_bytes;
+                 }
+-                if (pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV && buf_size >= 5) {
++                if (pes->stream_type == 0x15 && buf_size >= 5) {
++                // if (pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV && buf_size >= 5) {
+                     /* skip metadata access unit header */
+                     pes->pes_header_size += 5;
+                     p += 5;
+

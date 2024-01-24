@@ -26,14 +26,12 @@ do_unpack()
 {
   info "Unpack $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src
-  if [[ -d ffmpeg-${VERSION} ]]
-  then
-    info 'Already unpacked'
-    return
-  fi
   if ! tar xjf ffmpeg-${VERSION}.tar.bz2; then
     error "Failed to unpack $NAME"
   fi
+  cd ffmpeg-${VERSION}
+  pwd
+  patch -p1 <../../../../patches/fix-klv.patch
   info "Unpack complete"
 }
 
@@ -49,10 +47,16 @@ do_configure()
     --extra-ldflags="-L$BUILD_DIR/lib" \
     --extra-libs="-lpthread -lm" \
     --bindir="$BIN_DIR" \
+    --disable-autodetect \
+    --disable-everything \
+    --disable-doc \
     --enable-gpl \
-    --enable-openssl \
     --enable-libx264 \
-    --enable-nonfree
+    --enable-demuxer=rtsp,mp3 \
+    --enable-decoder=mp2 \
+    --enable-parser=h264 \
+    --enable-muxer=data \
+    --enable-protocol=file,pipe
   then
     error "Failed to configure $NAME"
   fi
