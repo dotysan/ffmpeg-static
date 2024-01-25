@@ -1,5 +1,5 @@
 ARG DEBVER=bookworm
-ARG FFREF=fd61687e1aa60acb669bbf227eceeac6b6ae6f3b
+ARG FFREF=b969b960f4037e66ad22b3a7e637cb3f518f9a81
 
 #======================================================================
 FROM debian:$DEBVER-slim as build-ffmpeg
