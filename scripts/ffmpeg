@@ -39,6 +39,10 @@ do_configure()
 {
   info "Configure $NAME [ ${C_RUN}${VERSION}${C_INFO} ] ..."
   cd_src ffmpeg-${VERSION}
+
+# this turns on bsfs=extract_extradata since we can only enable all bsfs below
+sed -i '/flv_muxer_select="aac_adtstoasc_bsf"/s/"$/ extract_extradata_bsf"/' configure
+
   if ! PKG_CONFIG_PATH="$BUILD_DIR/lib/pkgconfig" ./configure \
     --ld="g++" \
     --prefix="$BUILD_DIR" \
@@ -52,11 +56,11 @@ do_configure()
     --disable-doc \
     --enable-gpl \
     --enable-libx264 \
-    --enable-demuxer=rtsp,mp3 \
     --enable-decoder=mp2 \
     --enable-parser=h264 \
-    --enable-muxer=data \
-    --enable-protocol=file,pipe
+    --enable-demuxer=rtsp,mp3 \
+    --enable-muxer=fifo,data,flv \
+    --enable-protocol=file,pipe,rtmp
   then
     error "Failed to configure $NAME"
   fi
