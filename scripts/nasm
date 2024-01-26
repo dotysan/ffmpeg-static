@@ -32,7 +32,7 @@ do_unpack()
     info 'Already unpacked'
     return
   fi
-  if ! tar xzvf nasm-${VERSION}.tar.gz; then
+  if ! tar xzf nasm-${VERSION}.tar.gz; then
     error "Failed to unpack $NAME"
   fi
   info "Unpack complete"

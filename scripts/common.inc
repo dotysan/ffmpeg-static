@@ -30,7 +30,8 @@ PATH="$BIN_DIR:$PATH"
 
 # echo "PATH=\"$BIN_LINK_PATH:$$PATH\"" > ~/.profile
 
-if [ "$(tput colors)" -ge "8" ]; then
+if [ "$TERM" ] && [ "$TERM" != "dumb" ] && [ "$(tput colors)" -ge "8" ]
+then
   C_ERROR='\E[31;40m'
   C_INFO='\E[32;40m'
   C_NONE='\E[0m'

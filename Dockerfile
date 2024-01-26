@@ -22,9 +22,6 @@ COPY build.sh .
 COPY scripts scripts
 COPY patches patches
 
-# temp hack to appease build.sh calling `tput colors` without -T or $TERM
-ENV TERM xterm-256color
-
 RUN ./build.sh nasm
 RUN ./build.sh x264
 RUN ./build.sh ffmpeg
