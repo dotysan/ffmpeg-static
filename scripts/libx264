@@ -32,7 +32,7 @@ do_unpack()
     info 'Already unpacked'
     return
   fi
-  if ! tar xjvf $SNAPSHOT_FILE; then
+  if ! tar xjf $SNAPSHOT_FILE; then
     error "Failed to unpack $NAME"
   fi
   info "Unpack complete"

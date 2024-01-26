@@ -19,12 +19,18 @@ RUN apt-get install --yes --no-install-recommends \
 
 WORKDIR /ffmpeg-static
 COPY build.sh .
-COPY scripts scripts
-COPY patches patches
+COPY scripts/common.inc scripts/
 
+COPY scripts/nasm scripts/
 RUN ./build.sh nasm
+
+COPY scripts/libx264 scripts/
 RUN ./build.sh x264
+
+COPY scripts/ffmpeg scripts/
+COPY patches patches
 RUN ./build.sh ffmpeg
+
 RUN find build \( -name ffmpeg -o -name ffprobe \) \
     -type f |xargs cp --target-directory /usr/local/bin
 
