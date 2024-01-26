@@ -56,7 +56,7 @@ sed -i '/flv_muxer_select="aac_adtstoasc_bsf"/s/"$/ extract_extradata_bsf"/' con
     --disable-doc \
     --enable-gpl \
     --enable-libx264 \
-    --enable-decoder=mp2 \
+    --enable-decoder=mp2,h264 \
     --enable-parser=h264 \
     --enable-demuxer=rtsp,mp3 \
     --enable-muxer=fifo,data,flv,hls \
