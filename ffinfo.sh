@@ -19,7 +19,7 @@ ffinfo() {
 }
 
 lessorcat() {
-    if ! hash less >/dev/null
+    if ! hash less 2>/dev/null
     then cat
     elif [ -t 1 ]
     then less
