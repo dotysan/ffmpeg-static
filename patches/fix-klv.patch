@@ -1,11 +1,31 @@
-commit 17a1e00c2f92829720f7d5c53a0aaafe36b7d249
-Author: Curtis Doty <Curtis@GreenKey.net>
-Date:   Wed Jan 24 01:59:37 2024 +0000
-
-    Revert 468615f204 until we find a better solution
-
+diff --git a/libavcodec/h264_parser.c b/libavcodec/h264_parser.c
+index 94cfbc481e..a527be24f5 100644
+--- a/libavcodec/h264_parser.c
++++ b/libavcodec/h264_parser.c
+@@ -370,7 +370,7 @@ static inline int parse_nal_units(AVCodecParserContext *s,
+             }
+             if (!p->ps.pps_list[pps_id]) {
+                 av_log(avctx, AV_LOG_ERROR,
+-                       "non-existing PPS %u referenced\n", pps_id);
++                       "non-existing PPS %u referenced in parse_nal_units()\n", pps_id);
+                 goto fail;
+             }
+ 
+diff --git a/libavcodec/h264_slice.c b/libavcodec/h264_slice.c
+index 5c17edf9a4..afa9555365 100644
+--- a/libavcodec/h264_slice.c
++++ b/libavcodec/h264_slice.c
+@@ -1722,7 +1722,7 @@ static int h264_slice_header_parse(const H264Context *h, H264SliceContext *sl,
+     }
+     if (!h->ps.pps_list[sl->pps_id]) {
+         av_log(h->avctx, AV_LOG_ERROR,
+-               "non-existing PPS %u referenced\n",
++               "non-existing PPS %u referenced in h264_slice_header_parse()\n",
+                sl->pps_id);
+         return AVERROR_INVALIDDATA;
+     }
 diff --git a/libavformat/mpegts.c b/libavformat/mpegts.c
-index c7fd1f5d1f..61a0b4062c 100644
+index c7fd1f5d1f..f4c42b872d 100644
 --- a/libavformat/mpegts.c
 +++ b/libavformat/mpegts.c
 @@ -1306,7 +1306,8 @@ skip:
@@ -13,9 +33,8 @@ index c7fd1f5d1f..61a0b4062c 100644
                      buf_size -= sl_header_bytes;
                  }
 -                if (pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV && buf_size >= 5) {
-+                if (pes->stream_type == 0x15 && buf_size >= 5) {
-+                // if (pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV && buf_size >= 5) {
++                if (pes->stream_type == 0x15 && buf_size >= 5 &&
++                    pes->st->codecpar->codec_id == AV_CODEC_ID_SMPTE_KLV) {
                      /* skip metadata access unit header */
                      pes->pes_header_size += 5;
                      p += 5;
-
