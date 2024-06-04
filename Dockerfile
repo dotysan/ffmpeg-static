@@ -31,8 +31,8 @@ COPY scripts/ffmpeg scripts/
 COPY patches patches
 RUN ./build.sh ffmpeg
 
-RUN find build -type f -name ffmpeg |xargs ls -t | \
-    sed 1q |xargs cp --target-directory /usr/local/bin
+RUN find build -type f \( -name ffmpeg -o -name ffprobe \) |xargs ls -t \
+    | sed 2q |xargs cp --target-directory /usr/local/bin
 
 COPY ffinfo.sh /usr/local/bin/
 RUN ffinfo.sh
