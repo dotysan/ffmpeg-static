@@ -54,14 +54,13 @@ do_configure()
     --bindir="$BIN_DIR" \
     \
     --disable-autodetect \
-    --disable-ffprobe \
     --disable-everything \
     --disable-doc \
     \
     --enable-gpl \
     --enable-libx264 \
     \
-    --enable-decoder=h264,mp2,pcm_u8 \
+    --enable-decoder=h264,aac,mp2,pcm_u8 \
     --enable-parser=h264 \
     --enable-demuxer=mp3,rtsp \
     --enable-filter=anullsrc,aresample \
