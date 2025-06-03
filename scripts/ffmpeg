@@ -59,12 +59,13 @@ do_configure()
     \
     --enable-gpl \
     --enable-libx264 \
+    --enable-libx265 \
     \
     --enable-decoder=h264,aac,mp2,mp3,pcm_u8 \
     --enable-parser=h264 \
     --enable-demuxer=mp3,rtsp \
     --enable-filter=anullsrc,aresample \
-    --enable-encoder=libx264,aac,mp3 \
+    --enable-encoder=libx264,libx265,aac,mp3 \
     --enable-muxer=data,fifo,flv,hls,h264 \
     --enable-protocol=file,pipe,rtmp \
     --enable-bsf=extract_extradata \
