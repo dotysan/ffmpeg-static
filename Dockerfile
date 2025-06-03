@@ -10,6 +10,7 @@ RUN apt-get update && apt-get upgrade --yes
 RUN apt-get install --yes --no-install-recommends \
     bzip2 \
     ca-certificates \
+    cmake \
     g++ \
     make \
     patch \
@@ -26,6 +27,9 @@ RUN ./build.sh nasm
 
 COPY scripts/libx264 scripts/
 RUN ./build.sh x264
+
+COPY scripts/libx265 scripts/
+RUN ./build.sh x265
 
 COPY scripts/ffmpeg scripts/
 COPY patches patches
