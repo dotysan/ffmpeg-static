@@ -5,7 +5,7 @@ __DIR__=$(dirname "${__FILE__}")
 . $__DIR__/common.inc
 
 NAME=ffmpeg
-VERSION=6.1.1
+VERSION=6.1.2
 
 do_download()
 {
@@ -64,7 +64,7 @@ do_configure()
     --enable-parser=h264 \
     --enable-demuxer=mp3,rtsp \
     --enable-filter=anullsrc,aresample \
-    --enable-encoder=aac,mp3 \
+    --enable-encoder=libx264,aac,mp3 \
     --enable-muxer=data,fifo,flv,hls,h264 \
     --enable-protocol=file,pipe,rtmp \
     --enable-bsf=extract_extradata \
